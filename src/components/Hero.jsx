@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+
 import Row from "./layouts/Row";
+
 import { ME } from "../data/constants";
 
 export default function Hero() {
@@ -7,6 +9,7 @@ export default function Hero() {
 
   useEffect(() => {
     const t = setTimeout(() => setOn(true), 150);
+
     return () => clearTimeout(t);
   }, []);
 
@@ -21,9 +24,77 @@ export default function Hero() {
         justifyContent: "center",
         alignItems: "center",
         paddingBottom: "clamp(3rem, 6vw, 5rem)",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
-      <Row>
+      {/* SUBTLE HERO GRID */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+
+          backgroundImage: `
+            linear-gradient(
+              rgba(255,255,255,0.012) 1px,
+              transparent 1px
+            ),
+            linear-gradient(
+              90deg,
+              rgba(255,255,255,0.012) 1px,
+              transparent 1px
+            )
+          `,
+
+          backgroundSize: "90px 90px",
+
+          maskImage:
+            "radial-gradient(circle at center, black 0%, transparent 75%)",
+
+          WebkitMaskImage:
+            "radial-gradient(circle at center, black 0%, transparent 75%)",
+        }}
+      />
+
+      {/* HERO DECORATIVE CIRCLE */}
+      <div
+        style={{
+          position: "absolute",
+          width: "clamp(280px, 38vw, 600px)",
+          height: "clamp(280px, 38vw, 600px)",
+          borderRadius: "50%",
+          border: "1px solid rgba(255,255,255,0.025)",
+          right: "-10%",
+          top: "8%",
+          pointerEvents: "none",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: "15%",
+            borderRadius: "50%",
+            border: "1px solid rgba(255,255,255,0.018)",
+          }}
+        />
+
+        <div
+          style={{
+            position: "absolute",
+            inset: "32%",
+            borderRadius: "50%",
+            border: "1px solid rgba(255,255,255,0.015)",
+          }}
+        />
+      </div>
+
+      <Row
+        style={{
+          position: "relative",
+          zIndex: 2,
+        }}
+      >
         {/* badge */}
         <div
           style={{
@@ -45,6 +116,7 @@ export default function Hero() {
               flexShrink: 0,
             }}
           />
+
           <span
             style={{
               fontFamily: "'DM Sans', sans-serif",
@@ -58,7 +130,12 @@ export default function Hero() {
         </div>
 
         {/* headline - size lớn kiểu bouayaben */}
-        <div style={{ overflow: "hidden", marginBottom: "1.4rem" }}>
+        <div
+          style={{
+            overflow: "hidden",
+            marginBottom: "1.4rem",
+          }}
+        >
           <h1
             data-h
             style={{
@@ -113,7 +190,8 @@ export default function Hero() {
             transition: "opacity 0.9s ease 0.95s",
           }}
         >
-          {/* <a
+          {/* 
+          <a
             href={`mailto:${ME.email}`}
             data-h
             style={{
@@ -126,8 +204,12 @@ export default function Hero() {
               textTransform: "uppercase",
               transition: "background 0.2s",
             }}
-            onMouseOver={(e) => (e.currentTarget.style.background = "#fff")}
-            onMouseOut={(e) => (e.currentTarget.style.background = "#e0e0e0")}
+            onMouseOver={(e) =>
+              (e.currentTarget.style.background = "#fff")
+            }
+            onMouseOut={(e) =>
+              (e.currentTarget.style.background = "#e0e0e0")
+            }
           >
             Request a call →
           </a>
@@ -146,7 +228,8 @@ export default function Hero() {
             }}
           >
             View work
-          </a> */}
+          </a>
+          */}
 
           <span
             style={{
@@ -157,7 +240,6 @@ export default function Hero() {
               letterSpacing: "0.12em",
             }}
           >
-            {/* {ME.tagline} · {ME.location} */}
             Scroll Down ↓
           </span>
         </div>

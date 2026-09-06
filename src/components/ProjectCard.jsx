@@ -43,6 +43,7 @@ export default function ProjectCard({ p, i }) {
             >
               {l}
             </p>
+
             <p
               style={{
                 fontFamily: "'DM Sans', sans-serif",
@@ -71,6 +72,22 @@ export default function ProjectCard({ p, i }) {
           overflow: "hidden",
         }}
       >
+        {/* CHỈ THÊM ẢNH Ở ĐÂY */}
+        {p.image && (
+          <img
+            src={p.image}
+            alt={p.client}
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
+        )}
+
         <div
           style={{
             position: "absolute",
@@ -92,6 +109,7 @@ export default function ProjectCard({ p, i }) {
           >
             {p.client}
           </p>
+
           <p
             style={{
               fontFamily: "'DM Mono', monospace",
@@ -149,6 +167,7 @@ export default function ProjectCard({ p, i }) {
           >
             {p.num}
           </p>
+
           <p
             style={{
               fontFamily: "'DM Sans', sans-serif",
@@ -161,6 +180,7 @@ export default function ProjectCard({ p, i }) {
             {p.desc}
           </p>
         </div>
+
         <span
           style={{
             fontFamily: "'DM Mono', monospace",

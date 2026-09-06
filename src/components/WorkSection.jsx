@@ -12,7 +12,7 @@ export default function WorkSection() {
           <p
             style={{
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: "1rem",
+              fontSize: "0.62rem",
               color: "#2a2a2a",
               letterSpacing: "0.22em",
               textTransform: "uppercase",

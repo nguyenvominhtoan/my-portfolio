@@ -1,143 +1,194 @@
 import { useState } from "react";
+
 import Section from "./layouts/Section";
 import Row from "./layouts/Row";
 import { Reveal } from "../hooks/useInView";
-import { PROCESS, ME } from "../data/constants";
+import { PROCESS } from "../data/constants";
 
 export default function ProcessSection() {
-  const [open, setOpen] = useState(null);
+  const [active, setActive] = useState(null);
 
   return (
-    <Section>
-      <Row>
+    <Section
+      id="process"
+      extraStyle={{
+        minHeight: "100vh",
+        height: "100vh",
+        overflow: "hidden",
+      }}
+    >
+      <Row
+        style={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
         <Reveal>
-          <div
+          <h2
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "baseline",
+              fontFamily: "'Instrument Serif', serif",
+              fontSize: "clamp(2.2rem, 3.2vw, 3rem)",
+              fontWeight: 400,
+              color: "#d8d8d8",
               marginBottom: "3.8rem",
-              flexWrap: "wrap",
-              gap: "1rem",
+              textAlign: "left",
             }}
           >
-            <h2
-              data-h
-              style={{
-                fontFamily: "'Instrument Serif', serif",
-                fontSize: "clamp(2rem, 3vw, 3.2rem)",
-                fontWeight: 400,
-                color: "#e0e0e0",
-              }}
-            >
-              What I Do
-            </h2>
-            <a
-              href={`mailto:${ME.email}`}
-              data-h
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: "0.7rem",
-                color: "#3a3a3a",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                borderBottom: "1px solid #1e1e1e",
-                paddingBottom: "2px",
-              }}
-            >
-              Get in touch
-            </a>
-          </div>
+            What I Do
+          </h2>
         </Reveal>
 
-        {PROCESS.map((p, i) => (
-          <Reveal key={p.num} delay={i * 0.05}>
-            <div
-              data-h
-              onClick={() => setOpen(open === i ? null : i)}
-              style={{
-                borderTop: "1px solid #1a1a1a",
-                padding: "1.7rem 0",
-                cursor: "pointer",
-                ...(i === PROCESS.length - 1 && {
-                  borderBottom: "1px solid #1a1a1a",
-                }),
-              }}
-            >
+        <div
+          style={{
+            borderTop: "1px solid #181818",
+          }}
+        >
+          {PROCESS.map((item, i) => {
+            const isActive = active === i;
+
+            return (
               <div
+                key={item.num}
+                onMouseEnter={() => setActive(i)}
+                onMouseLeave={() => setActive(null)}
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  position: "relative",
+                  borderBottom: "1px solid #181818",
+                  cursor: "none",
+                  overflow: "hidden",
+
+                  background: isActive
+                    ? "rgba(255,255,255,0.018)"
+                    : "transparent",
+
+                  transition: "background 0.45s ease",
                 }}
               >
+                {/* TOP LINE */}
                 <div
                   style={{
-                    display: "flex",
-                    alignItems: "baseline",
-                    gap: "1.8rem",
+                    position: "absolute",
+                    left: 0,
+                    top: 0,
+                    height: "1px",
+                    width: isActive ? "100%" : "0%",
+
+                    background:
+                      "linear-gradient(90deg, transparent, #555, transparent)",
+
+                    transition: "width 0.7s cubic-bezier(0.16,1,0.3,1)",
+
+                    pointerEvents: "none",
+                  }}
+                />
+
+                {/* MAIN ROW */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "60px 1fr 40px",
+                    alignItems: "center",
+
+                    minHeight: "78px",
+
+                    transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1)",
+
+                    transform: isActive ? "translateX(8px)" : "translateX(0)",
                   }}
                 >
+                  {/* NUMBER */}
                   <span
                     style={{
                       fontFamily: "'DM Mono', monospace",
-                      fontSize: "0.62rem",
-                      color: "#2a2a2a",
-                      minWidth: "28px",
+                      fontSize: "0.6rem",
+                      color: isActive ? "#777" : "#2a2a2a",
+                      letterSpacing: "0.08em",
+                      transition: "color 0.4s ease",
                     }}
                   >
-                    {p.num}
+                    {item.num}
                   </span>
+
+                  {/* TITLE */}
                   <span
                     style={{
                       fontFamily: "'Instrument Serif', serif",
-                      fontSize: "clamp(1.05rem, 1.9vw, 1.55rem)",
+                      fontSize: "clamp(1.2rem, 1.7vw, 1.5rem)",
                       fontWeight: 400,
-                      color: open === i ? "#e0e0e0" : "#666",
-                      transition: "color 0.25s",
+                      color: isActive ? "#d0d0d0" : "#555",
+                      transition: "color 0.45s ease",
                     }}
                   >
-                    {p.title}
+                    {item.title}
+                  </span>
+
+                  {/* ARROW */}
+                  <span
+                    style={{
+                      fontFamily: "'DM Mono', monospace",
+                      fontSize: "0.8rem",
+                      color: isActive ? "#aaa" : "#2a2a2a",
+                      textAlign: "right",
+
+                      transform: isActive
+                        ? "translateX(-4px)"
+                        : "translateX(0)",
+
+                      transition:
+                        "color 0.4s ease, transform 0.45s cubic-bezier(0.16,1,0.3,1)",
+                    }}
+                  >
+                    {isActive ? "→" : "+"}
                   </span>
                 </div>
-                <span
-                  style={{
-                    color: "#2a2a2a",
-                    fontSize: "1.2rem",
-                    display: "inline-block",
-                    transform: open === i ? "rotate(45deg)" : "none",
-                    transition: "transform 0.3s",
-                  }}
-                >
-                  +
-                </span>
-              </div>
 
-              <div
-                style={{
-                  maxHeight: open === i ? "220px" : "0",
-                  overflow: "hidden",
-                  opacity: open === i ? 1 : 0,
-                  transition: "max-height 0.45s ease, opacity 0.35s ease",
-                }}
-              >
-                <p
+                {/* DESCRIPTION */}
+                <div
                   style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: "0.85rem",
-                    color: "#555",
-                    lineHeight: 1.9,
-                    paddingTop: "1.1rem",
-                    paddingLeft: "3rem",
-                    maxWidth: "62ch",
+                    display: "grid",
+                    gridTemplateRows: isActive ? "1fr" : "0fr",
+
+                    transition:
+                      "grid-template-rows 0.55s cubic-bezier(0.16,1,0.3,1)",
+
+                    paddingLeft: "60px",
                   }}
                 >
-                  {p.body}
-                </p>
+                  <div
+                    style={{
+                      overflow: "hidden",
+                    }}
+                  >
+                    <p
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: "0.82rem",
+                        lineHeight: 1.8,
+                        color: "#666",
+                        maxWidth: "650px",
+
+                        paddingBottom: "1.5rem",
+
+                        opacity: isActive ? 1 : 0,
+
+                        transform: isActive
+                          ? "translateY(0)"
+                          : "translateY(-8px)",
+
+                        transition:
+                          "opacity 0.45s ease 0.05s, transform 0.5s cubic-bezier(0.16,1,0.3,1)",
+                      }}
+                    >
+                      {item.body}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </Reveal>
-        ))}
+            );
+          })}
+        </div>
       </Row>
     </Section>
   );

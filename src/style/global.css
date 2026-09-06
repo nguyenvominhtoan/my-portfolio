@@ -1,0 +1,75 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: #0c0c0c;
+}
+
+body {
+  background: #0c0c0c;
+  color: #e0e0e0;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden; /* giữ cái này */
+  width: 100%;
+  max-width: 100vw; /* thêm dòng này */
+}
+
+#root {
+  width: 100%;
+  overflow-x: hidden; /* thêm dòng này */
+}
+
+a {
+  cursor: none;
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: #fff;
+  color: #000;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+::-webkit-scrollbar-track {
+  background: #0c0c0c;
+}
+::-webkit-scrollbar-thumb {
+  background: #222;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

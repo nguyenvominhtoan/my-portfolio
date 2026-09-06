@@ -95,7 +95,7 @@ export default function Hero() {
           zIndex: 2,
         }}
       >
-        {/* badge */}
+        {/* BADGE */}
         <div
           style={{
             display: "flex",
@@ -129,7 +129,7 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* headline - size lớn kiểu bouayaben */}
+        {/* HEADLINE */}
         <div
           style={{
             overflow: "hidden",
@@ -154,7 +154,7 @@ export default function Hero() {
           </h1>
         </div>
 
-        {/* sub */}
+        {/* SUB */}
         <div
           style={{
             overflow: "hidden",
@@ -177,14 +177,13 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* cta */}
+        {/* CTA — GIỮ NHƯ CŨ NHƯNG BỎ GẠCH */}
         <div
           style={{
             display: "flex",
             alignItems: "center",
             gap: "2rem",
             flexWrap: "wrap",
-            borderTop: "1px solid #181818",
             paddingTop: "1.8rem",
             opacity: on ? 1 : 0,
             transition: "opacity 0.9s ease 0.95s",
@@ -230,20 +229,28 @@ export default function Hero() {
             View work
           </a>
           */}
-
-          <span
-            style={{
-              marginLeft: "auto",
-              fontFamily: "'DM Mono', monospace",
-              fontSize: "0.8rem",
-              color: "#2a2a2a",
-              letterSpacing: "0.12em",
-            }}
-          >
-            Scroll Down ↓
-          </span>
         </div>
       </Row>
+
+      {/* SCROLL DOWN — GÓC PHẢI DƯỚI */}
+      <span
+        style={{
+          position: "absolute",
+          right: "clamp(2rem, 7vw, 7rem)",
+          bottom: "clamp(2rem, 4vw, 3.5rem)",
+
+          fontFamily: "'DM Mono', monospace",
+          fontSize: "0.8rem",
+          color: "#2a2a2a",
+          letterSpacing: "0.12em",
+
+          opacity: on ? 1 : 0,
+          transform: on ? "translateY(0)" : "translateY(10px)",
+          transition: "opacity 0.9s ease 1.1s, transform 0.9s ease 1.1s",
+        }}
+      >
+        Scroll Down ↓
+      </span>
     </section>
   );
 }

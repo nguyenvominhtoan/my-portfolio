@@ -31,19 +31,19 @@ export default function ContactSection() {
               fontWeight: 400,
               lineHeight: 1.0,
               letterSpacing: "-0.03em",
-              color: "transparent",
-              WebkitTextStroke: "1px #303030",
+              // color: "transparent",
+              // WebkitTextStroke: "1px #303030",
               marginBottom: "5rem",
               transition: "color 0.35s, -webkit-text-stroke 0.35s",
             }}
-            onMouseOver={(e) => {
-              e.target.style.color = "#e0e0e0";
-              e.target.style.WebkitTextStroke = "0px";
-            }}
-            onMouseOut={(e) => {
-              e.target.style.color = "transparent";
-              e.target.style.WebkitTextStroke = "1px #303030";
-            }}
+            // onMouseOver={(e) => {
+            //   e.target.style.color = "#e0e0e0";
+            //   e.target.style.WebkitTextStroke = "0px";
+            // }}
+            // onMouseOut={(e) => {
+            //   e.target.style.color = "transparent";
+            //   e.target.style.WebkitTextStroke = "1px #303030";
+            // }}
           >
             Let's build
             <br />

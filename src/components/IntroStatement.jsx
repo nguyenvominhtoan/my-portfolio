@@ -10,7 +10,7 @@ export default function IntroStatement() {
           <p
             style={{
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: "1  rem",
+              fontSize: "0.62rem",
               color: "#2a2a2a",
               letterSpacing: "0.22em",
               textTransform: "uppercase",

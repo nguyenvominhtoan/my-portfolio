@@ -53,7 +53,7 @@ export const PROJECTS = [
     year: "2026",
     desc: "Responsive e-commerce platform with product listings, cart, search, and real-time features. Implemented cost-effective architecture resulting in a 20% reduction in project expenses.",
     bg: "#161616",
-    // image: "/src/images/we connect.png",
+    image: "/src/images/we connect.png",
   },
   {
     num: "(002)",
@@ -64,7 +64,7 @@ export const PROJECTS = [
     year: "2026",
     desc: "Real-time social platform with user authentication, posts, and live chat via WebSockets. Integrated a responsive frontend with RESTful APIs.",
     bg: "#131313",
-    // image: "/src/images/twitter.png",
+    image: "/src/images/twitter.png",
   },
   {
     num: "(003)",
@@ -75,7 +75,7 @@ export const PROJECTS = [
     year: "2026",
     desc: "Web app for QR-based restaurant order management, featuring an admin dashboard, social login, SEO optimisation and mobile-first design.",
     bg: "#111111",
-    // image: "/src/images/qr next.png",
+    image: "/src/images/qr next.png",
   },
   {
     num: "(004)",
@@ -86,7 +86,7 @@ export const PROJECTS = [
     year: "2026",
     desc: "Web app for QR-based restaurant order management, featuring an admin dashboard, social login, SEO optimisation and mobile-first design.",
     bg: "#111111",
-    // image: "/src/images/qr next.png",
+    image: "/src/images/qr next.png",
   },
 ];
 

@@ -1,290 +1,375 @@
 import { useState } from "react";
-import { useInView } from "../hooks/useInView";
+import { Reveal } from "../hooks/useInView";
 
 export default function ProjectCard({ p, i }) {
-  const [ref, v] = useInView(0.06);
-  const [hov, setHov] = useState(false);
-
-  // Inject CSS cho responsive meta-data và các hiệu ứng nâng cao
-  const injectStyles = `
-    .meta-grid-${i} {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 0.6rem;
-    }
-
-    .project-desc-box-${i} {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 3rem;
-    }
-
-    /* FIX MỜ: Đưa ảnh về tâm, dùng contain và giới hạn kích thước để giữ nguyên pixel gốc */
-    .img-transform-${i} {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: auto;
-      height: auto;
-      max-width: 82%;   /* Tạo khoảng đệm bao quanh giúp ảnh trông như một mockup đặt trong khung */
-      max-height: 82%;
-      object-fit: contain;
-      transform: translate(-50%, -50%) scale(1);
-      transition:
-        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-        filter 0.5s ease;
-    }
-
-    @media (max-width: 640px) {
-      .meta-grid-${i} {
-        grid-template-columns: 1fr !important;
-        gap: 1rem !important;
-      }
-
-      .project-desc-box-${i} {
-        flex-direction: column !important;
-        gap: 1rem !important;
-      }
-
-      .img-transform-${i} {
-        max-width: 90%;
-        max-height: 90%;
-      }
-    }
-  `;
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div
-      ref={ref}
-      style={{
-        opacity: v ? 1 : 0,
-        transform: v ? "none" : "translateY(32px)",
-        transition: `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${
-          i * 0.12
-        }s, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${i * 0.12}s`,
-        marginBottom: "4.5rem",
-      }}
-    >
-      <style dangerouslySetInnerHTML={{ __html: injectStyles }} />
-
-      {/* ─── METADATA (CLIENT / FIELD / ROLE) ─── */}
-      <div
-        className={`meta-grid-${i}`}
-        style={{
-          marginBottom: "1.3rem",
-          paddingBottom: "1.3rem",
-          borderBottom: "1px solid #141414",
-        }}
-      >
-        {[
-          ["Client /", p.client],
-          ["Field /", p.field],
-          ["Role /", p.role],
-        ].map(([l, val]) => (
-          <div key={l}>
-            <p
-              style={{
-                fontFamily: "'DM Mono', monospace",
-                fontSize: "0.55rem",
-                color: "#444",
-                letterSpacing: "0.12em",
-                marginBottom: "6px",
-              }}
-            >
-              {l}
-            </p>
-
-            <p
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: "0.76rem",
-                color: "#888",
-              }}
-            >
-              {val}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      {/* ─── VISUAL IMAGE CONTAINER ─── */}
-      <div
-        data-h="project"
-        onMouseEnter={() => setHov(true)}
-        onMouseLeave={() => setHov(false)}
+    <Reveal>
+      <article
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         style={{
           width: "100%",
-          paddingBottom: "52%",
-          position: "relative",
-          background: p.bg || "#0a0a0a", // Nền card sáng hơn nền web #000 một chút để đổ khối tương phản
-
-          border: `1px solid ${hov ? "rgba(255,255,255,0.18)" : "#141414"}`,
-
-          boxShadow: hov ? "0 25px 50px -12px rgba(0,0,0,0.85)" : "none",
-
-          marginBottom: "1.5rem",
-
-          transition: "border-color 0.4s ease, box-shadow 0.4s ease",
-
-          overflow: "hidden",
-          borderRadius: "6px",
+          minWidth: 0,
         }}
       >
-        {/* 1. ẢNH DỰ ÁN (ĐÃ FIX MỜ) */}
-        {p.image ? (
-          <img
-            src={p.image}
-            alt={p.client}
-            className={`img-transform-${i}`}
-            style={{
-              // Zoom nhẹ tinh tế (1.03) để ảnh không bị vỡ hạt điểm ảnh khi hover
-              transform: hov
-                ? "translate(-50%, -50%) scale(1.03)"
-                : "translate(-50%, -50%) scale(1)",
-              // Hiện rõ nét 100% màu gốc căng chi tiết khi di chuột vào
-              filter: hov
-                ? "grayscale(0%) brightness(1) contrast(1)"
-                : "grayscale(25%) brightness(0.7) contrast(0.95)",
-            }}
-          />
-        ) : (
-          /* Backup fallback */
+        {/* IMAGE FRAME */}
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+            aspectRatio: "16 / 10",
+            overflow: "hidden",
+            background: p.bg || "#111",
+            border: "none",
+            outline: "none",
+            boxShadow: isHovered
+              ? "0 30px 70px -35px rgba(0,0,0,0.95)"
+              : "none",
+            transition: "box-shadow 0.6s ease",
+          }}
+        >
+          {p.url ? (
+            <a
+              href={p.url}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`View ${p.client} project`}
+              style={{
+                position: "absolute",
+                inset: 0,
+                display: "block",
+                width: "100%",
+                height: "100%",
+                overflow: "hidden",
+                textDecoration: "none",
+                cursor: "none",
+              }}
+            >
+              {p.image ? (
+                <img
+                  src={p.image}
+                  alt={`${p.client} project preview`}
+                  loading={i < 2 ? "eager" : "lazy"}
+                  decoding="async"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: p.fit || "cover",
+                    objectPosition: p.objectPosition || "center center",
+                    display: "block",
+                    transform: isHovered ? "scale(1.045)" : "scale(1)",
+                    filter: isHovered
+                      ? "brightness(1.02) contrast(1.05) saturate(1.02)"
+                      : "brightness(0.84) contrast(1.03) saturate(0.94)",
+                    transition:
+                      "transform 1.1s cubic-bezier(0.16,1,0.3,1), filter 0.7s ease",
+                    backfaceVisibility: "hidden",
+                    WebkitBackfaceVisibility: "hidden",
+                    willChange: "transform, filter",
+                  }}
+                />
+              ) : (
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background: `
+                      radial-gradient(
+                        circle at 30% 30%,
+                        ${p.bg || "#222"},
+                        #080808 72%
+                      )
+                    `,
+                    transform: isHovered ? "scale(1.045)" : "scale(1)",
+                    transition: "transform 1.1s cubic-bezier(0.16,1,0.3,1)",
+                  }}
+                />
+              )}
+
+              {/* Overlay */}
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: isHovered
+                    ? "rgba(0,0,0,0.04)"
+                    : "rgba(0,0,0,0.15)",
+                  transition: "background 0.6s ease",
+                  pointerEvents: "none",
+                }}
+              />
+
+              {/* Project number */}
+              <span
+                style={{
+                  position: "absolute",
+                  top: "1.2rem",
+                  left: "1.2rem",
+                  fontFamily: "'DM Mono', monospace",
+                  fontSize: "0.55rem",
+                  color: isHovered
+                    ? "rgba(255,255,255,0.82)"
+                    : "rgba(255,255,255,0.48)",
+                  letterSpacing: "0.1em",
+                  opacity: isHovered ? 1 : 0.8,
+                  transform: isHovered ? "translateY(0)" : "translateY(-5px)",
+                  transition:
+                    "opacity 0.4s ease, color 0.4s ease, transform 0.55s cubic-bezier(0.16,1,0.3,1)",
+                  pointerEvents: "none",
+                }}
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+
+              {/* Center arrow */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  width: "46px",
+                  height: "46px",
+                  border: "1px solid rgba(255,255,255,0.55)",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  opacity: isHovered ? 1 : 0,
+                  transform: isHovered
+                    ? "translate(-50%, -50%) scale(1)"
+                    : "translate(-50%, -50%) scale(0.7)",
+                  transition:
+                    "opacity 0.4s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1)",
+                  pointerEvents: "none",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "'DM Mono', monospace",
+                    fontSize: "0.8rem",
+                    color: "#fff",
+                    lineHeight: 1,
+                  }}
+                >
+                  ↗
+                </span>
+              </div>
+
+              {/* View Project */}
+              <span
+                style={{
+                  position: "absolute",
+                  right: "1.2rem",
+                  bottom: "1.2rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.45rem",
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: "0.58rem",
+                  color: "#fff",
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  opacity: isHovered ? 1 : 0,
+                  transform: isHovered ? "translateY(0)" : "translateY(10px)",
+                  transition:
+                    "opacity 0.4s ease, transform 0.55s cubic-bezier(0.16,1,0.3,1)",
+                  pointerEvents: "none",
+                }}
+              >
+                View Project
+                <span style={{ fontSize: "0.8rem", lineHeight: 1 }}>↗</span>
+              </span>
+            </a>
+          ) : (
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                overflow: "hidden",
+              }}
+            >
+              {p.image ? (
+                <img
+                  src={p.image}
+                  alt={`${p.client} project preview`}
+                  loading="lazy"
+                  decoding="async"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: p.fit || "cover",
+                    objectPosition: p.objectPosition || "center center",
+                    display: "block",
+                    transform: isHovered ? "scale(1.045)" : "scale(1)",
+                    filter: isHovered
+                      ? "brightness(1.02) contrast(1.05) saturate(1.02)"
+                      : "brightness(0.84) contrast(1.03) saturate(0.94)",
+                    transition:
+                      "transform 1.1s cubic-bezier(0.16,1,0.3,1), filter 0.7s ease",
+                    backfaceVisibility: "hidden",
+                    WebkitBackfaceVisibility: "hidden",
+                    willChange: "transform, filter",
+                  }}
+                />
+              ) : (
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background: p.bg || "#111",
+                  }}
+                />
+              )}
+
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "rgba(0,0,0,0.15)",
+                  pointerEvents: "none",
+                }}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* PROJECT INFORMATION */}
+        <div style={{ marginTop: "1.4rem" }}>
           <div
             style={{
-              position: "absolute",
-              inset: 0,
-              background: `linear-gradient(
-                135deg,
-                ${p.bg} 0%,
-                #080808 100%
-              )`,
-              opacity: hov ? 0.9 : 0.6,
-              transition: "opacity 0.4s",
-            }}
-          />
-        )}
-
-        {/* 2. TEXT LAYER TRÊN ẢNH (Tự động ẩn hẳn khi hover để khoe ảnh nét) */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
-            gap: "10px",
-            zIndex: 2,
-            pointerEvents: "none",
-
-            opacity: hov ? 0 : 1,
-
-            transform: hov ? "translateY(-15px)" : "translateY(0px)",
-
-            transition:
-              "opacity 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "'Instrument Serif', serif",
-              fontStyle: "italic",
-              fontSize: "clamp(1.4rem, 2.5vw, 2.3rem)",
-              color: "#fff",
-              textShadow: "0 2px 10px rgba(0,0,0,0.55)",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              gap: "1.5rem",
             }}
           >
-            {p.client}
-          </p>
+            <div style={{ minWidth: 0 }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.7rem",
+                  marginBottom: "0.55rem",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "'DM Mono', monospace",
+                    fontSize: "0.5rem",
+                    color: isHovered ? "#888" : "#444",
+                    letterSpacing: "0.08em",
+                    transition: "color 0.4s ease",
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")}.
+                </span>
 
-          <p
-            style={{
-              fontFamily: "'DM Mono', monospace",
-              fontSize: "0.6rem",
-              color: "#888",
-              letterSpacing: "0.1em",
-            }}
-          >
-            {p.stack}
-          </p>
-        </div>
+                <span
+                  style={{
+                    fontFamily: "'DM Mono', monospace",
+                    fontSize: "0.48rem",
+                    color: "#3b3b3b",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {p.category}
+                </span>
+              </div>
 
-        {/* 3. HOVER ACTION */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: hov ? "rgba(0, 0, 0, 0.3)" : "transparent",
+              <h3
+                style={{
+                  fontFamily: "'Instrument Serif', serif",
+                  fontSize: "clamp(1.8rem, 2.8vw, 2.5rem)",
+                  fontWeight: 400,
+                  lineHeight: 0.95,
+                  letterSpacing: "-0.025em",
+                  color: isHovered ? "#e5e5e5" : "#c5c5c5",
+                  margin: 0,
+                  transition: "color 0.45s ease",
+                }}
+              >
+                {p.client}
+              </h3>
+            </div>
 
-            opacity: hov ? 1 : 0,
-
-            transform: hov ? "translateY(0px)" : "translateY(15px)",
-
-            transition:
-              "opacity 0.4s ease, background 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-
-            zIndex: 3,
-            pointerEvents: "none",
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "0.7rem",
-              color: "#fff",
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              borderBottom: "1px solid #fff",
-              paddingBottom: "4px",
-            }}
-          >
-            View Project →
-          </span>
-        </div>
-      </div>
-
-      {/* ─── BOTTOM DATA (DESC / NUM / YEAR) ─── */}
-      <div className={`project-desc-box-${i}`}>
-        <div style={{ flex: 1 }}>
-          <p
-            style={{
-              fontFamily: "'DM Mono', monospace",
-              fontSize: "0.58rem",
-              color: "#444",
-              marginBottom: "8px",
-            }}
-          >
-            {p.num}
-          </p>
+            <span
+              style={{
+                fontFamily: "'DM Mono', monospace",
+                fontSize: "0.5rem",
+                color: "#3b3b3b",
+                letterSpacing: "0.08em",
+                paddingTop: "0.2rem",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {p.year}
+            </span>
+          </div>
 
           <p
             style={{
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: "0.85rem",
-              color: "#999",
-              lineHeight: 1.8,
-              maxWidth: "58ch",
+              fontSize: "0.78rem",
+              lineHeight: 1.75,
+              fontWeight: 300,
+              color: "#626262",
+              maxWidth: "52ch",
+              margin: "1rem 0 0",
             }}
           >
             {p.desc}
           </p>
-        </div>
 
-        <span
-          style={{
-            fontFamily: "'DM Mono', monospace",
-            fontSize: "0.58rem",
-            color: "#555",
-            flexShrink: 0,
-          }}
-        >
-          {p.year}
-        </span>
-      </div>
-    </div>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              gap: "0.6rem 1.2rem",
+              marginTop: "1rem",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "'DM Mono', monospace",
+                fontSize: "0.5rem",
+                color: "#3d3d3d",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+              }}
+            >
+              {p.stack}
+            </span>
+          </div>
+
+          {p.url && (
+            <a
+              href={p.url}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                display: "none",
+                fontFamily: "'DM Mono', monospace",
+                fontSize: "0.52rem",
+                color: "#777",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                textDecoration: "none",
+                marginTop: "1.1rem",
+              }}
+            >
+              View Project ↗
+            </a>
+          )}
+        </div>
+      </article>
+    </Reveal>
   );
 }
